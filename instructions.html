@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Инструкции — Umbranet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #050507; color: #e5e5e5; line-height: 1.5; padding: 1rem; }
+        .container { max-width: 900px; width: 100%; margin: 0 auto; background: rgba(10, 10, 15, 0.8); border-radius: 24px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5); word-wrap: break-word; overflow-wrap: break-word; }
+        h1 { font-size: 1.8rem; font-weight: 700; color: #7f5cff; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); word-break: break-word; }
+        h2 { font-size: 1.3rem; font-weight: 600; color: #c0c0ff; margin: 1.5rem 0 0.8rem 0; word-break: break-word; }
+        h3 { font-size: 1.1rem; font-weight: 600; color: #a0a0ff; margin: 1.2rem 0 0.5rem 0; word-break: break-word; }
+        p { margin-bottom: 0.8rem; color: #c0c0c0; font-weight: 400; line-height: 1.5; word-break: break-word; }
+        .step-list, .section-list { margin: 0.75rem 0 0.75rem 1.2rem; list-style-type: none; }
+        .step-list li, .section-list li { margin-bottom: 0.5rem; position: relative; padding-left: 1.5rem; word-break: break-word; }
+        .step-list li::before { content: counter(step) "."; counter-increment: step; color: #7f5cff; font-weight: bold; position: absolute; left: 0; }
+        .step-list { counter-reset: step; }
+        .section-list li::before { content: "•"; color: #7f5cff; font-weight: bold; position: absolute; left: 0; }
+        .instruction-img { max-width: 100%; height: auto; border-radius: 16px; margin: 1rem 0; display: block; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .img-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1rem 0; }
+        .img-row .instruction-img { flex: 1; min-width: 150px; margin: 0; }
+        .devices-grid { display: flex; flex-direction: column; gap: 12px; margin: 1.5rem 0; }
+        .device-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; }
+        .device-card:hover { background: rgba(127, 92, 255, 0.1); border-color: rgba(127, 92, 255, 0.3); transform: translateX(5px); }
+        .device-icon { font-size: 2rem; }
+        .device-info h3 { margin: 0 0 4px 0; font-size: 1.1rem; }
+        .device-info p { margin: 0; font-size: 0.8rem; opacity: 0.7; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px 16px; color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s ease; margin-bottom: 1.5rem; cursor: pointer; }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateX(-2px); }
+        .download-btn { display: inline-block; background: rgba(127, 92, 255, 0.2); border: 1px solid rgba(127, 92, 255, 0.4); border-radius: 10px; padding: 8px 16px; margin: 8px 8px 8px 0; color: #c0c0ff; text-decoration: none; font-size: 0.85rem; transition: all 0.2s ease; }
+        .download-btn:hover { background: rgba(127, 92, 255, 0.4); color: #fff; }
+        .warning-note { background: rgba(255, 80, 80, 0.1); border-left: 3px solid #ff4d4d; padding: 0.8rem 1rem; border-radius: 12px; margin: 1rem 0; font-size: 0.85rem; }
+        .footer-note { margin-top: 1.5rem; font-size: 0.7rem; text-align: center; color: #6a6a6a; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1rem; }
+        a { color: #7f5cff; text-decoration: none; border-bottom: 1px dashed rgba(127, 92, 255, 0.4); transition: 0.2s; word-break: break-all; }
+        a:hover { color: #00d4ff; border-bottom-color: #00d4ff; }
+        @media (min-width: 768px) { body { padding: 2rem; } .container { padding: 2rem; } h1 { font-size: 2rem; } .devices-grid { gap: 16px; } }
+    </style>
+</head>
+<body>
+    <div class="container" id="app"></div>
+    <script>
+        // ----- ЛОКАЛЬНЫЕ КАРТИНКИ (как ты назвал файлы) -----
+        const images = {
+            happIcon1: "images/happIcon1.png",
+            happIcon2: "images/happIcon2.png",
+            stepCopy: "images/stepCopy.png",
+            stepImport1: "images/stepImport1.png",
+            stepImport2: "images/stepImport2.png",
+            stepCountry: "images/stepCountry.png",
+            stepQr: "images/stepQr.png",
+            stepImportIos: "images/stepImportIos.png",
+            stepPaste: "images/stepPaste.png",
+            stepImportWin: "images/stepImportWin.png",
+            stepCountryWin: "images/stepCountryWin.png"
+        };
+
+        const pages = {
+            home: {
+                title: 'Инструкции по подключению',
+                content: `
+                    <h1>📱 Инструкции для подключения</h1>
+                    <p>Выберите ваше устройство, чтобы получить пошаговое руководство по настройке VPN.</p>
+                    <div class="devices-grid">
+                        <div class="device-card" data-page="android"><div class="device-icon">📱</div><div class="device-info"><h3>Android</h3><p>Смартфоны и планшеты</p></div></div>
+                        <div class="device-card" data-page="ios"><div class="device-icon">🍏</div><div class="device-info"><h3>iPhone / MacOS</h3><p>Apple устройства</p></div></div>
+                        <div class="device-card" data-page="windows"><div class="device-icon">💻</div><div class="device-info"><h3>Windows</h3><p>Компьютеры и ноутбуки</p></div></div>
+                        <div class="device-card" data-page="androidtv"><div class="device-icon">📺</div><div class="device-info"><h3>Android TV</h3><p>Телевизоры и приставки</p></div></div>
+                        <div class="device-card" data-page="linux"><div class="device-icon">🐧</div><div class="device-info"><h3>Linux</h3><p>Все дистрибутивы</p></div></div>
+                    </div>
+                `
+            },
+            android: {
+                title: 'Инструкция для Android',
+                content: `
+                    <div class="back-btn" data-page="home">← Назад к списку</div>
+                    <h1>Установка на Android</h1>
+                    <h3>Установить приложение Happ</h3>
+                    <p>Google play Happ -- <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" rel="noopener noreferrer">скачать</a> (нажать на надпись "скачать")<br>
+                    Скачать APK Happ -- <a href="https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk" target="_blank" rel="noopener noreferrer">скачать</a> (нажать на надпись "скачать")<br>
+                    Или введите в поиск Google play «Happ»</p>
+					                   
+                    <h3>Вариант 1 - Удобное подключение</h3>
+                    <p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.<br>
+                    <p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepCopy}" class="instruction-img" alt="Connect">
+					Нажимаем кнопку "открыть/запустить"</p>
+					<img src="${images.stepQr}" class="instruction-img" alt="Happ APK">
+                    <h3>Вариант 2: Получение конфигурации для подключения</h3>
+                   
+					<p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.<br>
+                    <p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepImport1}" class="instruction-img" alt="Копирование ссылки">
+									
+                    <h3>Процесс настройки</h3>
+                    <p>1) Вам нужно скопировать вашу ссылку формата https://subscription.umbranet.ru/***<br>(копирование можно сделать просто нажав на саму ссылку)</p>
+                    
+                    <p>2) Перейти в приложение HAPP</p>
+                    <p>3) Нажать на + в правом верхнем углу и выбрать "Импорт из буфера обмена"</p>
+                    <img src="${images.stepImport2}" class="instruction-img" alt="Вставка ссылки">
+                    <p>После импорта вашей подписки вам остается выбрать страну,<br>к которой хотите подключиться и нажать кнопку "Подключиться"</p>
+                    <img src="${images.stepCountry}" class="instruction-img" alt="Выбор страны">
+                    <p>Вы имеете полное право выбрать любой другой клиент<br>(Варианты для Android - flclashx, clashmeta),<br>который лучше соответствует вашим потребностям.</p>
+                `
+            },
+            ios: {
+                title: 'Инструкция для iOS / MacOS',
+                content: `
+                    <div class="back-btn" data-page="home">← Назад к списку</div>
+                    <h1>Подключение на айфон и MAC OS (IOS)</h1>
+                    <h3>1. Установить приложение Happ👇</h3>
+					<p>App Store Global -- <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank" rel="noopener noreferrer">скачать</a> (нажать на надпись "скачать")<br>
+                    App Store Rus -- <a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" target="_blank" rel="noopener noreferrer">скачать</a> (нажать на надпись "скачать")<br>
+                    Или введите в поиск App Store «Happ»</p>
+					
+                    <h3>Вариант 1 - Удобное подключение</h3>
+                    <p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.<br>
+                    <p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepCopy}" class="instruction-img" alt="Connect">
+					Нажимаем кнопку "открыть/запустить"</p>
+					<img src="${images.stepImportIos}" class="instruction-img" alt="Happ APK">
+                    <h3>Вариант 2: Получение конфигурации для подключения</h3>
+                   
+					<p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.<br>
+                    <p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepImport1}" class="instruction-img" alt="Копирование ссылки">
+									
+                    <h3>Процесс настройки</h3>
+                    <p>1) Вам нужно скопировать вашу ссылку формата https://subscription.umbranet.ru/***<br>(копирование можно сделать просто нажав на саму ссылку)</p>
+                    
+                    <p>2) Перейти в приложение HAPP</p>
+                    <p>3) Нажать на + в правом верхнем углу и выбрать "Импорт из буфера обмена"</p>
+                    <img src="${images.stepImport2}" class="instruction-img" alt="Вставка ссылки">
+                    <p>После импорта вашей подписки вам остается выбрать страну,<br>к которой хотите подключиться и нажать кнопку "Подключиться"</p>
+                    <img src="${images.stepCountry}" class="instruction-img" alt="Выбор страны">
+                    <p>Вы имеете полное право выбрать любой другой клиент<br>(Варианты для IOS - Streisand, V2raytun),<br>который лучше соответствует вашим потребностям</p>
+                `
+            },
+            windows: {
+                title: 'Инструкция для Windows',
+                content: `
+                    <div class="back-btn" data-page="home">← Назад к списку</div>
+                    <h1>Подключение на Windows</h1>
+                    <h3>1. Установить приложение Happ👇</h3>
+					<p>GitHub Happ - <a href="https://github.com/Happ-proxy" target="_blank" rel="noopener noreferrer">скачать</a> (нажать на надпись "скачать")</p>
+					
+                    <img src="${images.happIcon1}" class="instruction-img" alt="GitHub Happ">
+					                    
+                    <h3>Вариант 1 - Удобное подключение</h3>
+					<div class="warning-note">(данный вариант не работает в Web-версии Telegram !)</div>
+					
+                    <p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.<br>
+                    <p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepCopy}" class="instruction-img" alt="Connect">
+					Нажимаем кнопку "открыть/запустить"</p>
+					<img src="${images.stepPaste}" class="instruction-img" alt="Happ APK">
+                    
+                    <h3>Вариант 2: Получение конфигурации для подключения</h3>
+                    <p>Перед подключением, убедитесь, что у Вас есть подписка на сервис.</p>
+					<p>1. Откройте бота и напишите команду: /start <br>(или нажмите на кнопку Старт внизу)</p>
+					<p>2. В открывшемся меню нажмите на кнопку: 🔑 Мои ключи.</p>
+					<img src="${images.happIcon1}" class="instruction-img" alt="My key">
+                    <img src="${images.happIcon2}" class="instruction-img" alt="Key">
+					<img src="${images.stepImport1}" class="instruction-img" alt="Копирование ссылки">
+									
+                    <h3>Процесс настройки</h3>
+                    <p>1) Вам нужно скопировать вашу ссылку формата https://subscription.umbranet.ru/***<br>(копирование можно сделать просто нажав на саму ссылку)</p>
+                    
+                    <p>2) Перейти в приложение HAPP</p>
+                    <p>3) Нажать на + в правом верхнем углу и выбрать "Импорт из буфера обмена"</p>
+                    <img src="${images.stepImportWin}" class="instruction-img" alt="Вставка ссылки">
+                    <p>После импорта вашей подписки вам остается выбрать страну,<br>к которой хотите подключиться и нажать кнопку "Подключиться"</p>
+                    <img src="${images.stepCountryWin}" class="instruction-img" alt="Выбор страны">
+                    <p>Вы имеете полное право выбрать любой другой клиент<br>(Варианты для Windows - flclashx, koalabox),<br>который лучше соответствует вашим потребностям.</p>
+                `
+            },
+            androidtv: {
+                title: 'Инструкция для Android TV',
+                content: `
+                    <div class="back-btn" data-page="home">← Назад к списку</div>
+                    <h1>Подключение android tv</h1>
+                    <h3>ПУНКТ 1 - УСТАНОВИТЬ ПРИЛОЖЕНИЕ НА ТЕЛЕФОН</h3>
+                    <p><a href="#" data-page="ios">Инструкция айфон</a></p>
+                    <p><a href="#" data-page="android">Инструкция андроид</a></p>
+                    <h3>Установка на телевизор</h3>
+                    <p>1. Установите приложение Happ на Android TV из Google Play.</p>
+                    <p>2. При первом запуске приложение предложит добавить подписку через QR-код. Просто отсканируйте QR-код в мобильном приложении Happ для iOS или Android, после чего телефон передаст подписку на телевизор.</p>
+                    <p>После чего можете пользоваться доступом к сети.</p>
+                `
+            },
+            linux: {
+                title: 'Инструкция для Linux',
+                content: `
+                    <div class="back-btn" data-page="home">← Назад к списку</div>
+                    <h1>Установка на Linux</h1>
+                    <h4>Получение конфигурации для подключения</h4>
+                    <p>Перед получением конфигурации, убедитесь, что у Вас есть подписка на сервис.</p>
+                    <p>- Откройте бота и напишите команду: /start<br>
+                    - В открывшемся меню нажмите на кнопку: 🔑 Мои ключи и выбираете ключ.<br>
+                    - В открывшемся окне нажимаем на ссылку-подписку ("Ваш ключ: https://subscription.umbranet.ru/***"</p>
+                    <p>Ссылка-подписка - это одна ссылка, которая содержит в себе конфигурацию для всех локаций, достаточно один раз ввести данные и использовать их в клиенте.</p>
+                    <p>- Ссылка на подписку<br>
+                    - После нажатия на кнопку 🔑 Мои ключи -> Выбираете ключ, бот создаст ссылку формата Вида https://subscription.umbranet.ru/*** и выведет её в чате, это и будет ссылка на подписку, которую необходимо вставить в клиент.</p>
+                    
+                    <div class="warning-note">Важно: Наш сервис предоставляет только конфигурацию для подключения к сети, мы не разрабатываем клиентские приложения. По вопросам функционирования клиентов обращайтесь к их разработчикам. Обратите внимание, что запросы о работе клиентов в нашу техническую поддержку не рассматриваются и будут проигнорированы.</div>
+                    
+                    <h4>Настройка клиента для подключения</h4>
+                    <p>Для вашего удобства мы отобрали три наиболее популярных и надёжных клиента для подключения к сети на операционной системе Linux.</p>
+                    <p>Рекомендовано Hiddify - универсальный клиент с открытым исходным кодом, поддерживающий множество протоколов и имеющий удобный интерфейс.<br>
+                    Amnezia - надежный клиент с высоким уровнем безопасности и простой настройкой.<br>
+                    Nekoray - легковесный клиент с расширенными возможностями настройки для опытных пользователей.</p>
+                    
+                    <h4>Процесс настройки</h4>
+                    <p><strong>Hiddify</strong><br>
+                    - Необходимо скачать и установить приложение<br>
+                    - Запустите приложение от имени администратора<br>
+                    - Нажмите кнопку "Новый профиль" (Плюсик сверху справа)<br>
+                    - Скопируйте полученную ссылку подписки (Вида https://subscription.umbranet.ru/***) из бота<br>
+                    - Вернитесь в программу и нажмите "Вставить из буфера обмена"<br>
+                    - Можно подключаться к ВПН, сменить необходимую локацию и протокол можно во вкладке "Прокси".</p>
+                    <p><strong>Amnezia</strong><br>
+                    Amnezia не поддерживает работу с подписками, для работы приложения необходимо добавлять вручную каждую конфигурацию.</p>
+                    <p><strong>Nekoray</strong><br>
+                    - Необходимо скачать и установить приложение<br>
+                    - Запустите приложение от имени администратора<br>
+                    - Вам будет предоставлен выбор ядра - xray или sign-box, оба ядра поддерживают все необходимые протоколы (shadowsocks, vmess, vless, trojan), но xray является более стабильным и рекомендуемым вариантом для большинства пользователей. Выбирайте xray, если не уверены, какое ядро использовать.<br>
+                    - Перейдите в следующие разделы: Программа -> Настройки -> Группы<br>
+                    - Нажмите Новая группа<br>
+                    - Скопируйте полученную ссылку подписки (Вида https://subscription.umbranet.ru/***) из бота<br>
+                    - Данные для заполнения:<br>
+                    - Имя: Любое<br>
+                    - Тип: Подписка (subscription)<br>
+                    - URL: *Ваша ссылка*<br>
+                    - Нажмите ОК<br>
+                    - После добавления выберите группу и любой удобный профиль, например: VLESS, Германия, нажмите правой кнопкой мыши -> Запустить<br>
+                    - После запуска профиля выберите режим работы впн - Режим системного прокси или Режим TUN<br>
+                    - Впн должен быть подключен, если всё сделано правильно, вы можете проверить подключение в любом браузере, например: https://www.whatismyip.com</p>
+                `
+            }
+        };
+
+        function renderPage(pageId) {
+            const page = pages[pageId];
+            if (!page) return;
+            const app = document.getElementById('app');
+            app.innerHTML = page.content + '<div class="footer-note">© 2026 Umbranet. Все права защищены.</div>';
+            document.title = page.title + ' — Umbranet';
+            document.querySelectorAll('[data-page]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = el.getAttribute('data-page');
+                    if (targetPage && pages[targetPage]) {
+                        renderPage(targetPage);
+                        window.scrollTo(0, 0);
+                    }
+                });
+            });
+        }
+        renderPage('home');
+    </script>
+</body>
+</html>
